@@ -1,2 +1,3 @@
+this is now a conflicting change because we both tried to change it
 conflicting change here
 aaaadaslkdjalksdjalksdjalkjd
