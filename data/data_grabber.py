@@ -29,9 +29,25 @@ def streamify(event_response):
         streamified[k]=event_response[k]
     return streamified
 @helpers.bind
-def stream_formatter(streamified):
+def stream_formatter(stream_in,my_start_time,my_dur):
 	"""murat fill in here"""
-	return streamified
+
+    my_start_time=obspy.core.utcdatetime.UTCDateTime(my_start_time)
+
+    trace_in = stream_in['stream'][0]
+    channel_in = stream_in['channel']
+    station_in = stream_in['station']
+    
+    my_end_time = my_start_time + my_dur
+    trace_in.trim(my_start_time,my_end_time)
+    
+    stream_in['stream'][0]=trace_in
+    
+    stream_in['starttime']=str(obspy.core.utcdatetime.UTCDateTime(trace_in.stats.starttime))
+    stream_in['endtime']=str(obspy.core.utcdatetime.UTCDateTime(trace_in.stats.endtime))
+       
+    return stream_in 
+	
 def add_to_timestring(nseconds, isostring):
 	"""given a timestamp in iso8601 string format, add a timedelta
 	of nseconds to the time and return
